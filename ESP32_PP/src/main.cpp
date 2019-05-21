@@ -1,18 +1,9 @@
 #include <Arduino.h>
 #include <driver/adc.h>
-// #include <WiFi.h>
-// #include "esp_wifi.h"
-// #include <WebServer.h>
 #include "BluetoothSerial.h"
 
-
-const char* ssidAP     = "PoulePorte";
-const char* ssid     = "Livebox-4E0F";
-const char* passwordAP = "hahaha123";
-const char* password = "besson74500";
+#define PIN_LED 5
 BluetoothSerial ESP_BT;
-// bool serverStarted=false;
-// WiFiServer server(80);
 int val=0;
 int Received_char=0,receivedValue=0;
 // Variable to store the HTTP request
@@ -39,10 +30,10 @@ void tuningDown();
 void setup() 
 {
 
-      Serial.begin(115200);
-ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
+  Serial.begin(115200);
+  ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
 
-
+  pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
   adc1_config_width(ADC_WIDTH_BIT_12);
@@ -141,9 +132,10 @@ void downCmd(){
 
 }
 void loop() {
-
-  
   delay(500);
+  digitalWrite (PIN_LED, LOW);
+  delay(500);
+  digitalWrite (PIN_LED, HIGH);
    val = adc1_get_raw(ADC1_CHANNEL_0);
     
   if(ESP_BT.available()) // Manage the bluetooth serial port
