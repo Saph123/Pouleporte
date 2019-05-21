@@ -5,6 +5,7 @@
 #define PIN_LED 5
 BluetoothSerial ESP_BT;
 int val=0;
+int val_sensor1=0;
 int Received_char=0,receivedValue=0;
 // Variable to store the HTTP request
 String SendHTML(uint8_t upCmd,uint8_t downCmd);
@@ -32,7 +33,7 @@ void setup()
 
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
-
+  adc2_config_channel_atten(ADC2_CHANNEL_0,ADC_ATTEN_DB_11); // configure the ADC2 ch0
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
@@ -132,10 +133,22 @@ void downCmd(){
 
 }
 void loop() {
-  delay(500);
+
+  adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12,&val_sensor1);
+  Serial.print(val_sensor1);
+  Serial.println(" --> this is sensor");
+  if(val_sensor1 < 500 || door_open)
+  {
   digitalWrite (PIN_LED, LOW);
-  delay(500);
+
+  }
+  else if (val_sensor1 >= 500 && !door_open)
+  {
+
   digitalWrite (PIN_LED, HIGH);
+  }
+  
+  delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
     
   if(ESP_BT.available()) // Manage the bluetooth serial port
