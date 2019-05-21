@@ -134,7 +134,7 @@ void downCmd(){
 }
 void loop() {
 
-  adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12,&val_sensor1);
+  adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12, &val_sensor1);
   Serial.print(val_sensor1);
   Serial.println(" --> this is sensor");
   if(val_sensor1 < 500 || door_open)
