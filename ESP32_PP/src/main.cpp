@@ -35,38 +35,13 @@ void downCmd();
 void tuningUp();
 void tuningDown();
 
-// void handle_OnConnect() {
 
-//   Serial.println("Welcome darling!");
-//   server.send(200, "text/html", SendHTML(false,false)); 
-// }
-// void handle_upCmd() {
-
-//   Serial.println("Opening the door!");
-//   server.send(200, "text/html", SendHTML(true,false)); 
-//   upCmd();
-// }
-// void handle_downCmd() {
-
-//   Serial.println("Closing the door!");
-//   server.send(200, "text/html", SendHTML(false,true)); 
-//   downCmd();
-// }
 void setup() 
 {
 
       Serial.begin(115200);
 ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
-    // IPAddress servaddr(192,168,1,23);
-    // IPAddress gw(192,168,1,1);
-    // IPAddress subnetmask(255,255,255,0);
-    // WiFi.config(servaddr,gw,subnetmask);
-    // WiFi.begin(ssid,password);
-    // WiFi.softAPConfig(servaddr,gw,subnetmask);
-    // server.on("/", handle_OnConnect);
-    // server.on("/UP", handle_upCmd);
-    // server.on("/DOWN", handle_downCmd);
-    // server.begin();
+
 
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
@@ -163,76 +138,10 @@ void downCmd(){
     Serial.println("Door already shut");
   }
   
-//   handle_OnConnect();
+
 }
 void loop() {
-    // Serial.println(WiFi.status());
-    // if(WiFi.status()==WL_CONNECTED)
-    // {
-    //     server.begin();
-    //     serverStarted=true;
-    // }
-    // else
-    // {
-    //     Serial.println(WiFi.status());
-    // }
-    
-//     if(serverStarted)
-//     {
-//       Serial.println(WiFi.localIP());
-//         WiFiClient client = server.available();
-//         if(client)
-//         {
-//             Serial.println("new client");
-//             String currentLine;
-//             while (client.connected()) {            // loop while the client's connected
 
-//             if (client.available()) {             // if there's bytes to read from the client,
-//         char c = client.read();             // read a byte, then
-//         Serial.write(c);                    // print it out the serial monitor
-//         if (c == '\n') {                    // if the byte is a newline character
-
-//           // if the current line is blank, you got two newline characters in a row.
-//           // that's the end of the client HTTP request, so send a response:
-//           if (currentLine.length() == 0) {
-//             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
-//             // and a content-type so the client knows what's coming, then a blank line:
-//             client.println("HTTP/1.1 200 OK");
-//             client.println("Content-type:text/html");
-//             client.println();
-
-//             // the content of the HTTP response follows the header:
-//             client.print("<a href=\"/UP\">Ouvrir la porte</a><br>");
-//             client.print("<a href=\"/DOWN\">Fermer la porte</a><br>");
-//             client.print("<a href=\"/DOWN\">Fermer la porte</a><br>");
-//             client.print("<a href=\"VAL\">Get val </a><br>");
-//             // The HTTP response ends with another blank line:
-//             client.println();
-//             // break out of the while loop:
-//             break;  
-//           } else {    // if you got a newline, then clear currentLine:
-//             currentLine = "";
-//           }
-//         } else if (c != '\r') {  // if you got anything else but a carriage return character,
-//           currentLine += c;      // add it to the end of the currentLine
-//         }
-
-//         if (currentLine.endsWith("GET /UP")) {
-//            upCmd();
-//         }
-//         if (currentLine.endsWith("GET /DOWN")) {
-//           downCmd();
-// }
-//         if (currentLine.endsWith("GET /VAL")) {
-//           client.print(val);
-// }
-
-        
-//             }
-// }
-//         }
-//     }
-//    server.available();
   
   delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
@@ -445,23 +354,3 @@ void loop() {
   }
   Serial.println(i);
 }
-
-    
-
-// String SendHTML( uint8_t upCmd,uint8_t downCmd )
-// {
-
-//   String ptr="<!DOCTYPE html><html>\n<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\">\n<title>Pouloulouporte</title>\n<h1 style=\"text-align: center;\">POULE PORTE V0</h1>\n \
-// <h2 style=\"text-align: center;\">Welcome to Poule porte manager bitchesss</h2></head>\n<body>\n \
-// <p style=\"text-align: center;\"><a class=\"button button-on\" href=\"/DOWN\">HODOR</a>\n\"</p>\n \
-// <p style=\"text-align: center;\"><a class=\"button button-on\" href=\"/UP\">LATER BITCHES</a>\n\"</p>\n</body>\n</html>\n";
-// // if(jour)
-// // {
-// //   ptr+="Pour moi il fait jour";
-// // }
-// // else
-// // {
-// //   ptr+="Pour moi il fait nuit";
-// // }
-// return ptr;
-// }
