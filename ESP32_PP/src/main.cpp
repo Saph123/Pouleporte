@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <driver/adc.h>
 #include "BluetoothSerial.h"
+#include "motor.hpp"
 
 #define PIN_LED 5
 BluetoothSerial ESP_BT;
@@ -8,7 +9,6 @@ int val=0;
 int val_sensor1=0;
 int Received_char=0,receivedValue=0;
 // Variable to store the HTTP request
-String SendHTML(uint8_t upCmd,uint8_t downCmd);
 long time_up=10400;
 long time_down=6300;
 long time_s=900;
@@ -16,16 +16,12 @@ int k=0;
 int temp_threshold=0;
 int threshold_jour=1000;
 int thresholdNuit=400;
-const int H_A_Pin = 16;
-const int H_B_Pin = 21;
+
 boolean jour=true;
 boolean firstTime=false;
 long i=0,j=0;
 boolean door_open=true;
-void upCmd();
-void downCmd();
-void tuningUp();
-void tuningDown();
+
 
 
 void setup() 
@@ -41,42 +37,9 @@ void setup()
   adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_11);
 }
 
-void tuningUp(){
-  digitalWrite (H_B_Pin, HIGH);	// turn on 
-  digitalWrite (H_A_Pin, LOW);	// turn off 
-  delay(500);
-  digitalWrite (H_A_Pin, LOW);	// turn off 
-  digitalWrite (H_B_Pin, LOW);	// turn off 
-  Serial.println("Fine tuning UP");
-}
-void tuningDown(){
-  Serial.println("Fine tuning DOWN");
-  digitalWrite (H_B_Pin, LOW);	// turn off 
-  digitalWrite (H_A_Pin, HIGH);	// turn on 
-  delay(250);
-  digitalWrite (H_A_Pin, LOW);	// turn off 
-  digitalWrite (H_B_Pin, LOW);	// turn off 
-}
-void upCmd(){
-  if(!door_open)
-  {
-    Serial.println("Opening the door");
-  digitalWrite (H_B_Pin, HIGH);	// turn on 
-  digitalWrite (H_A_Pin, LOW);	// turn on 
-  delay(time_up);
-  digitalWrite (H_A_Pin, LOW);	// turn on 
-  digitalWrite (H_B_Pin, LOW);	// turn on 
-  Serial.println("Turning off engine");
-  delay(500);
-  door_open=true;
-  }
-  else
-  {
-    Serial.println("Door already opened");
-  }
+
   
-//   handle_OnConnect();
-}
+
 int parseSerial(int digits,int limitDown,int limitUp)
 {
   int localValue=0;
@@ -113,25 +76,7 @@ int parseSerial(int digits,int limitDown,int limitUp)
         
 
 }
-void downCmd(){
-  if (door_open)
-  {
-    door_open=false;
-    Serial.println("Shutting the door");
-  digitalWrite (H_B_Pin, LOW);	// turn on 
-  digitalWrite (H_A_Pin, HIGH);	// turn on 
-  delay(time_down);
-  digitalWrite (H_A_Pin, LOW);	// turn on 
-  digitalWrite (H_B_Pin, LOW);	// turn on 
-  delay(500);
-  }
-  else
-  {
-    Serial.println("Door already shut");
-  }
-  
 
-}
 void loop() {
 
   adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12, &val_sensor1);
@@ -194,7 +139,7 @@ void loop() {
         if(ESP_BT.read()==80)
         {
           ESP_BT.println("UP CMD Received!");
-          upCmd();
+          upCmd(door_open, time_up);
         }
       }
       else if(Received_char==68)
@@ -206,7 +151,7 @@ void loop() {
             if(ESP_BT.read()==78)
             {
               ESP_BT.println("DOWN CMD Received!");
-              downCmd();
+              downCmd(door_open, time_down);
 
             }
           }
@@ -310,7 +255,7 @@ void loop() {
     if(firstTime)
     {
       
-      upCmd();
+      upCmd(door_open, time_up);
       firstTime=false;
     }
     Serial.println("Au turbin les poulax: jour");
@@ -337,14 +282,14 @@ void loop() {
     if(firstTime)
     {
       
-      downCmd();
+      downCmd(door_open, time_down);
       firstTime=false;
     }
     Serial.println("Dodo les poulish : nuit");
-          if(val>threshold_jour)
+          if(val > threshold_jour)
       {
         i++;
-        if (i>time_s)
+        if (i > time_s)
         {
           i=0;
           firstTime=true;
