@@ -26,7 +26,7 @@ void setup()
 
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
-
+  initSensor();
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
@@ -98,7 +98,7 @@ int parseSerial(int digits,int limitDown,int limitUp)
 
 void loop() {
 
-  adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12, &val_sensor1);
+  val_sensor1 = getVal(1);
   Serial.print(val_sensor1);
   Serial.println(" --> this is sensor");
   if(val_sensor1 < 500 || door_open)

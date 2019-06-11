@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include "sensor_presence.hpp"
 
 void upCmd(bool door_open, int time_up);
 void downCmd(bool door_open, int time_down);

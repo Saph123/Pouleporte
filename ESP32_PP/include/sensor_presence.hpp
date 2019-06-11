@@ -1,5 +1,4 @@
-#include <Arduino.h>
 #include <driver/adc.h>
 
 void initSensor();
-int getVal();
+int getVal(int sensor);
