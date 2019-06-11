@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include <Arduino.h>
 
 void upCmd(bool door_open, int time_up);
 void downCmd(bool door_open, int time_down);
