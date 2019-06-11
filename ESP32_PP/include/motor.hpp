@@ -1,6 +1,8 @@
-#include <Arduino.h>
+#include "main.hpp"
+
 void upCmd(bool door_open, int time_up);
 void downCmd(bool door_open, int time_down);
+void stopMotor();
 void tuningUp();
 void tuningDown();
 

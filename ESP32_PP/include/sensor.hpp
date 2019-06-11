@@ -1,0 +1,2 @@
+void initSensor();
+int getVal();

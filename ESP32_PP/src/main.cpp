@@ -1,9 +1,6 @@
-#include <Arduino.h>
-#include <driver/adc.h>
-#include "BluetoothSerial.h"
-#include "motor.hpp"
 
-#define PIN_LED 5
+#include "main.hpp"
+
 BluetoothSerial ESP_BT;
 int val=0;
 int val_sensor1=0;
@@ -29,7 +26,7 @@ void setup()
 
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
-  adc2_config_channel_atten(ADC2_CHANNEL_0,ADC_ATTEN_DB_11); // configure the ADC2 ch0
+
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);

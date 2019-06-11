@@ -1,6 +1,5 @@
 #include "motor.hpp"
 
-
 void tuningUp(){
   digitalWrite (H_B_Pin, HIGH);	// turn on 
   digitalWrite (H_A_Pin, LOW);	// turn off 
