@@ -39,15 +39,25 @@ void setup()
 
 void changeDoorState()
 {
+  ESP_BT.println("Changing Door state");
   if(door_open)
   {
     door_open = false;
+
   }
   else
   {
     door_open = true;
   }
-  
+  ESP_BT.print("New door state: ");
+  if(door_open)
+  {
+    ESP_BT.println("Door open");
+  }
+  else
+  {
+    ESP_BT.println("Door closed");
+  }
 }
 
   
@@ -178,7 +188,21 @@ void loop() {
 
     }
     }
+    else if(Received_char==68) //D
+    {
+        if(ESP_BT.read() == 79) //O
+        {
+          if(ESP_BT.read() == 79) //O
+          {
+            if(ESP_BT.read() == 82) //R
+            {
+              changeDoorState();
+            }
 
+          }
+        }
+
+    }
     
     else if(Received_char==83) // S
     {
