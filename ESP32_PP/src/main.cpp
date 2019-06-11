@@ -134,6 +134,14 @@ void loop() {
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
+      if(door_open)
+      {
+        ESP_BT.print("Door is opened for me");
+      }
+      else
+      {
+          ESP_BT.print("Door is closed for me");
+      }
       if((time_s-i)/2 != time_down)
         {
           ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
