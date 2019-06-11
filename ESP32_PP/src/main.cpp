@@ -124,11 +124,15 @@ void loop() {
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
-      ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
+      if((time_s-i)/2 != time_down)
+        {
+          ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
+        }
+
     }
     else
     {
-      ESP_BT.println("Porte fermee");
+      ESP_BT.println("Nuit");
       ESP_BT.println(val);
       ESP_BT.print("Tj/Tn: ");
       ESP_BT.print(threshold_jour);
@@ -139,7 +143,10 @@ void loop() {
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
-      ESP_BT.print((time_s-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
+      if((time_s-i)/2 != time_up)
+      {
+        ESP_BT.print((time_s-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
+      }
     }
     Received_char=ESP_BT.read();
     Serial.print("Received"); Serial.println(Received_char);
