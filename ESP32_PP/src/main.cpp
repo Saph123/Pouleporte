@@ -37,6 +37,18 @@ void setup()
   adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_11);
 }
 
+void changeDoorState()
+{
+  if(door_open)
+  {
+    door_open = false;
+  }
+  else
+  {
+    door_open = true;
+  }
+  
+}
 
   
 
@@ -101,7 +113,7 @@ void loop() {
     if(jour)
     {
       // ESP_BT.println("Il fait jour");
-      ESP_BT.println("Porte ouverte");
+      ESP_BT.println("Jour");
       ESP_BT.println(val);
       ESP_BT.print("Tj/Tn: ");
       ESP_BT.print(threshold_jour);
@@ -161,94 +173,91 @@ void loop() {
     }
 
     
-      else if(Received_char==83) // S
+    else if(Received_char==83) // S
+    {
+      Received_char=ESP_BT.read();
+      if(Received_char==84) //T
       {
-        Received_char=ESP_BT.read();
-        if(Received_char==84) //T
+        temp_threshold= parseSerial(4,0,2000);
+        if (temp_threshold!=-1)
         {
-          temp_threshold= parseSerial(4,0,2000);
-          if (temp_threshold!=-1)
-          {
-          time_s =temp_threshold;
-          }
-          
+        time_s =temp_threshold;
         }
-        else if(Received_char==74 || Received_char==78) // J or N for threshold
-        {
-          temp_threshold= parseSerial(4,0,4000);
-          if (temp_threshold!=-1)
-          {
-            if(Received_char==74)
-          {
-
-              threshold_jour=temp_threshold;
-          }
-          else if(Received_char==78)
-          {
-            thresholdNuit=temp_threshold;
-          }
-          }
-        }
-          
-        }
-        else if(Received_char==84) //T
-        {
-            Received_char=ESP_BT.read();
-            if(Received_char==85) //U
-            {
-              ESP_BT.println("FineTuning UP");
-              tuningUp();
-
-            }
-            else if(Received_char==68) //D
-            {
-              ESP_BT.println("FineTuning DOWN");
-              tuningDown();
-
-            }
-        }
-        else if(Received_char==65)//A
-        {
-          Received_char=ESP_BT.read();
-          if(Received_char==85) //U
-          {
-            
-            time_up+=50;
-            ESP_BT.print("New time_up: ");
-            ESP_BT.println(time_up);
-          }
-          else if(Received_char==68) //D
-            {
-            time_down+=50;
-            ESP_BT.print("New time_down: ");
-            ESP_BT.println(time_down);
-
-            }
-
-        }
-        else if(Received_char==77)//M
-        {
-          Received_char=ESP_BT.read();
-          if(Received_char==85) //U
-          {
-            
-            time_up-=50;
-            ESP_BT.print("New time_up: ");
-            ESP_BT.println(time_up);
-          }
-          else if(Received_char==68) //D
-            {
-            time_down-=50;
-            ESP_BT.print("New time_down: ");
-            ESP_BT.println(time_down);
-
-            }
-
-        }
-        
-        
         
       }
+      else if(Received_char==74 || Received_char==78) // J or N for threshold
+      {
+        temp_threshold= parseSerial(4,0,4000);
+        if (temp_threshold!=-1)
+        {
+          if(Received_char==74)
+        {
+
+            threshold_jour=temp_threshold;
+        }
+        else if(Received_char==78)
+        {
+          thresholdNuit=temp_threshold;
+        }
+        }
+      }
+          
+      }
+      else if(Received_char==84) //T
+      {
+          Received_char=ESP_BT.read();
+          if(Received_char==85) //U
+          {
+            ESP_BT.println("FineTuning UP");
+            tuningUp();
+
+          }
+          else if(Received_char==68) //D
+          {
+            ESP_BT.println("FineTuning DOWN");
+            tuningDown();
+
+          }
+      }
+      else if(Received_char==65)//A
+      {
+        Received_char=ESP_BT.read();
+        if(Received_char==85) //U
+        {
+          
+          time_up+=50;
+          ESP_BT.print("New time_up: ");
+          ESP_BT.println(time_up);
+        }
+        else if(Received_char==68) //D
+          {
+          time_down+=50;
+          ESP_BT.print("New time_down: ");
+          ESP_BT.println(time_down);
+
+          }
+
+      }
+      else if(Received_char==77)//M
+      {
+        Received_char=ESP_BT.read();
+        if(Received_char==85) //U
+        {
+          
+          time_up-=50;
+          ESP_BT.print("New time_up: ");
+          ESP_BT.println(time_up);
+        }
+        else if(Received_char==68) //D
+          {
+          time_down-=50;
+          ESP_BT.print("New time_down: ");
+          ESP_BT.println(time_down);
+
+          }
+
+      }
+    }
   Serial.println(val);
   if (jour)
   {
