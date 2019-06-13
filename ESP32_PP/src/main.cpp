@@ -5,19 +5,17 @@ BluetoothSerial ESP_BT;
 int val=0;
 int val_sensor1=0;
 int Received_char=0,receivedValue=0;
-// Variable to store the HTTP request
 long time_up=10400;
 long time_down=6300;
 long time_s=900;
 int k=0;
 int temp_threshold=0;
-int threshold_jour=1000;
+int thresholdJour=1000;
 int thresholdNuit=400;
-
 boolean jour=true;
 boolean firstTime=false;
 long i=0,j=0;
-boolean door_open=true;
+boolean door_open=false;
 
 
 
@@ -27,6 +25,8 @@ void setup()
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
   initSensor();
+  initNVS();
+  init_all_param();
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
@@ -40,11 +40,13 @@ void changeDoorState()
   if(door_open)
   {
     door_open = false;
+    nvs_set("door_open",0);
 
   }
   else
   {
     door_open = true;
+    nvs_set("door_open",1);
   }
   ESP_BT.print("New door state: ");
   if(door_open)
@@ -97,7 +99,7 @@ int parseSerial(int digits,int limitDown,int limitUp)
 }
 
 void loop() {
-
+  
   val_sensor1 = getVal(1);
   Serial.print(val_sensor1);
   Serial.println(" --> this is sensor");
@@ -121,9 +123,10 @@ void loop() {
     {
       // ESP_BT.println("Il fait jour");
       ESP_BT.println("Jour");
+      ESP_BT.print("Capteur lum:");
       ESP_BT.println(val);
       ESP_BT.print("Tj/Tn: ");
-      ESP_BT.print(threshold_jour);
+      ESP_BT.print(thresholdJour);
       ESP_BT.print("/");
       ESP_BT.println(thresholdNuit);
       ESP_BT.print("Tj/Tn: ");
@@ -150,7 +153,7 @@ void loop() {
       ESP_BT.println("Nuit");
       ESP_BT.println(val);
       ESP_BT.print("Tj/Tn: ");
-      ESP_BT.print(threshold_jour);
+      ESP_BT.print(thresholdJour);
       ESP_BT.print("/");
       ESP_BT.println(thresholdNuit);
       ESP_BT.print("Tj/Tn: ");
@@ -218,6 +221,7 @@ void loop() {
         if (temp_threshold!=-1)
         {
         time_s =temp_threshold;
+        nvs_set("time_s",time_s);
         }
         
       }
@@ -229,11 +233,13 @@ void loop() {
           if(Received_char==74)
         {
 
-            threshold_jour=temp_threshold;
+            thresholdJour=temp_threshold;
+            nvs_set("thresholdJour", thresholdJour);
         }
         else if(Received_char==78)
         {
           thresholdNuit=temp_threshold;
+            nvs_set("thresholdNuit", thresholdNuit);
         }
         }
       }
@@ -264,13 +270,14 @@ void loop() {
           time_up+=50;
           ESP_BT.print("New time_up: ");
           ESP_BT.println(time_up);
+          nvs_set("time_up", time_up);
         }
         else if(Received_char==68) //D
           {
           time_down+=50;
           ESP_BT.print("New time_down: ");
           ESP_BT.println(time_down);
-
+          nvs_set("time_down", time_down);
           }
 
       }
@@ -283,12 +290,15 @@ void loop() {
           time_up-=50;
           ESP_BT.print("New time_up: ");
           ESP_BT.println(time_up);
+          nvs_set("time_up", time_up);
+
         }
         else if(Received_char==68) //D
           {
           time_down-=50;
           ESP_BT.print("New time_down: ");
           ESP_BT.println(time_down);
+          nvs_set("time_down", time_down);
 
           }
 
@@ -331,7 +341,7 @@ void loop() {
       firstTime=false;
     }
     Serial.println("Dodo les poulish : nuit");
-          if(val > threshold_jour)
+          if(val > thresholdJour)
       {
         i++;
         if (i > time_s)
@@ -348,4 +358,48 @@ void loop() {
       
   }
   Serial.println(i);
+}
+
+
+void init_all_param()
+{
+  int door_open_int;
+  time_up= nvs_get("time_up");
+  time_down=nvs_get("time_down");
+  time_s=nvs_get("time_s");
+  thresholdJour=nvs_get("thresholdJour");
+  thresholdNuit=nvs_get("thresholdNuit");
+  door_open_int=nvs_get("door_open");
+  if(door_open_int==0)
+  {
+    door_open=false;
+  }
+  else
+  {
+    door_open=true;
+  }
+  if (time_up==0xDEADBEEF)
+  {
+    Serial.println("First boot I guess");
+    // for first time, we initialise to default values
+    time_up=10400;
+    time_down=6300;
+    time_s=900;
+    thresholdJour=1000;
+    thresholdNuit=400;
+    door_open=false;
+    nvs_set("time_up",time_up);
+    nvs_set("time_down",time_down);
+    nvs_set("time_s",time_s);
+    nvs_set("thresholdJour",thresholdJour);
+    nvs_set("thresholdNuit",thresholdNuit);
+    if(door_open)
+    {
+      nvs_set("door_open",1);
+    }
+    else
+    {
+      nvs_set("door_open",0);
+    }
+  }
 }

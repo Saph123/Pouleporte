@@ -1,4 +1,5 @@
 #include "motor.hpp"
+#include "safeState.hpp"
 
 void tuningUp(){
   digitalWrite (H_B_Pin, HIGH);	// turn on 
@@ -28,11 +29,12 @@ void upCmd(bool door_open, int time_up){
   {
     stepCnt += 1;
     delay(100);
-    if(getVal(1)>1000)
+    Serial.println("Openin");
+    if(getVal(1)>4000)
     {
       break;
     }
-    Serial.println("Openin");
+    Serial.println("Fin de course montee");
   }
   digitalWrite (H_A_Pin, LOW);	// turn on 
   digitalWrite (H_B_Pin, LOW);	// turn on 
@@ -46,13 +48,30 @@ void upCmd(bool door_open, int time_up){
   }
 }
 void downCmd(bool door_open, int time_down){
+int stepCnt = 0;
   if (door_open)
   {
     door_open=false;
     Serial.println("Shutting the door");
   digitalWrite (H_B_Pin, LOW);	// turn on 
   digitalWrite (H_A_Pin, HIGH);	// turn on 
-  delay(time_down);
+  while( stepCnt * 100 <= time_down) 
+  {
+    stepCnt += 1;
+    delay(100);
+    Serial.println("Closing");
+    if(getVal(2)>4000)
+    {
+      break;
+    }
+    Serial.println("Fin de course descente");
+  }
+  if(getVal(2) < 3000)
+  {
+    // The sensor did not see the door ? Either not working or door stuck
+    raiseSafeState(1);
+  }
+  // delay(time_down);
   digitalWrite (H_A_Pin, LOW);	// turn on 
   digitalWrite (H_B_Pin, LOW);	// turn on 
   delay(500);
