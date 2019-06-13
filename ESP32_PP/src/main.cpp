@@ -9,6 +9,7 @@ long time_up=10400;
 long time_down=6300;
 long time_s=900;
 int k=0;
+bool safeState = false;
 int temp_threshold=0;
 int thresholdJour=1000;
 int thresholdNuit=400;
@@ -99,20 +100,25 @@ int parseSerial(int digits,int limitDown,int limitUp)
 }
 
 void loop() {
+  if(safeState)
+  {
+    digitalWrite(PIN_LED, HIGH);
+    ESP_BT.println("OULALALLA faut aller voir!!!!!");
+  }
   
   val_sensor1 = getVal(1);
   Serial.print(val_sensor1);
   Serial.println(" --> this is sensor");
-  if(val_sensor1 < 500 || door_open)
-  {
-  digitalWrite (PIN_LED, LOW);
+  // if(val_sensor1 < 500 || door_open)
+  // {
+  // digitalWrite (PIN_LED, LOW);
 
-  }
-  else if (val_sensor1 >= 500 && !door_open)
-  {
+  // }
+  // else if (val_sensor1 >= 500 && !door_open)
+  // {
 
-  digitalWrite (PIN_LED, HIGH);
-  }
+  // digitalWrite (PIN_LED, HIGH);
+  // }
   
   delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
@@ -129,8 +135,7 @@ void loop() {
       ESP_BT.print(thresholdJour);
       ESP_BT.print("/");
       ESP_BT.println(thresholdNuit);
-      ESP_BT.print("Tj/Tn: ");
-      ESP_BT.print("temps U/D: ");
+      ESP_BT.print("Temps U/D: ");
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
@@ -177,6 +182,7 @@ void loop() {
         {
           ESP_BT.println("UP CMD Received!");
           upCmd(door_open, time_up);
+          door_open=true;
         }
       }
       else if(Received_char==68)
@@ -188,7 +194,15 @@ void loop() {
             if(ESP_BT.read()==78)
             {
               ESP_BT.println("DOWN CMD Received!");
-              downCmd(door_open, time_down);
+              int err = downCmd(door_open, time_down);
+              door_open = false;
+              if (err != 0)
+              {
+                // eclairage led si pb
+                digitalWrite(PIN_LED, HIGH);
+                safeState=true;
+                nvs_set("safeState",1);
+              }
 
             }
           }
@@ -206,6 +220,21 @@ void loop() {
             {
               changeDoorState();
             }
+
+          }
+        }
+
+    }
+    else if(Received_char==86) //V
+    {
+        if(ESP_BT.read() == 85) //U
+        {
+          if(ESP_BT.read() == 85) //U
+          {
+              digitalWrite(PIN_LED, LOW);
+              ESP_BT.println("Reset LED");
+              safeState =false;
+              nvs_set("safeState",0);
 
           }
         }
@@ -311,6 +340,7 @@ void loop() {
     {
       
       upCmd(door_open, time_up);
+      door_open=true;
       firstTime=false;
     }
     Serial.println("Au turbin les poulax: jour");
@@ -338,6 +368,7 @@ void loop() {
     {
       
       downCmd(door_open, time_down);
+      door_open=false;
       firstTime=false;
     }
     Serial.println("Dodo les poulish : nuit");
@@ -363,13 +394,22 @@ void loop() {
 
 void init_all_param()
 {
-  int door_open_int;
+  int door_open_int,safeState_int;
   time_up= nvs_get("time_up");
   time_down=nvs_get("time_down");
   time_s=nvs_get("time_s");
   thresholdJour=nvs_get("thresholdJour");
   thresholdNuit=nvs_get("thresholdNuit");
   door_open_int=nvs_get("door_open");
+  safeState_int=nvs_get("safeState");
+  if(safeState_int==1)
+  {
+    safeState=true;
+  }
+  else
+  {
+    safeState=false;
+  }
   if(door_open_int==0)
   {
     door_open=false;
@@ -393,6 +433,15 @@ void init_all_param()
     nvs_set("time_s",time_s);
     nvs_set("thresholdJour",thresholdJour);
     nvs_set("thresholdNuit",thresholdNuit);
+    if(safeState)
+    {
+    nvs_set("safeState",1);
+    }
+    else
+    {
+      nvs_set("safeState",0);
+    }
+    
     if(door_open)
     {
       nvs_set("door_open",1);

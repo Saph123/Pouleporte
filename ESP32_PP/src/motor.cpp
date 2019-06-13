@@ -30,28 +30,29 @@ void upCmd(bool door_open, int time_up){
     stepCnt += 1;
     delay(100);
     Serial.println("Openin");
-    if(getVal(1)>4000)
+    if(getVal(CAPTEUR_DU_HAUT)>4000)
     {
       break;
     }
-    Serial.println("Fin de course montee");
   }
+    Serial.println("Fin de course montee");
   digitalWrite (H_A_Pin, LOW);	// turn on 
   digitalWrite (H_B_Pin, LOW);	// turn on 
   Serial.println("Turning off engine");
   delay(500);
   door_open=true;
+  nvs_set("door_open", 1);
   }
   else
   {
     Serial.println("Door already opened");
   }
 }
-void downCmd(bool door_open, int time_down){
+int downCmd(bool door_open, int time_down){
 int stepCnt = 0;
   if (door_open)
   {
-    door_open=false;
+    
     Serial.println("Shutting the door");
   digitalWrite (H_B_Pin, LOW);	// turn on 
   digitalWrite (H_A_Pin, HIGH);	// turn on 
@@ -60,17 +61,14 @@ int stepCnt = 0;
     stepCnt += 1;
     delay(100);
     Serial.println("Closing");
-    if(getVal(2)>4000)
+    if(getVal(CAPTEUR_DU_BAS)<500)
     {
       break;
     }
+  }
     Serial.println("Fin de course descente");
-  }
-  if(getVal(2) < 3000)
-  {
-    // The sensor did not see the door ? Either not working or door stuck
-    raiseSafeState(1);
-  }
+  door_open=false;
+  nvs_set("door_open",0);
   // delay(time_down);
   digitalWrite (H_A_Pin, LOW);	// turn on 
   digitalWrite (H_B_Pin, LOW);	// turn on 
@@ -80,6 +78,14 @@ int stepCnt = 0;
   {
     Serial.println("Door already shut");
   }
-  
+    if(getVal(CAPTEUR_DU_BAS) > 3000)
+  {
+    // The sensor did not see the door ? Either not working or door stuck
+    return 0xFF;
+  }
+  else
+  {
+    return 0;
+  }
 
 }
