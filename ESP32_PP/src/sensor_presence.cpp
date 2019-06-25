@@ -12,5 +12,9 @@ int getVal(int sensor)
   adc2_get_raw(ADC2_CHANNEL_0,ADC_WIDTH_BIT_12, &val_sensor1);
   return val_sensor1;
   }
+  else if(sensor == 0)
+  {
+    // I need to check to which pint I need to use the ADC...
+  }
   return 0;
 }

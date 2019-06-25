@@ -3,7 +3,8 @@
 
 BluetoothSerial ESP_BT;
 int val=0;
-int val_sensor1=0;
+int val_sensorbas=0;
+int val_sensorhaut=0;
 int Received_char=0,receivedValue=0;
 long time_up=10400;
 long time_down=6300;
@@ -106,15 +107,17 @@ void loop() {
     ESP_BT.println("OULALALLA faut aller voir!!!!!");
   }
   
-  val_sensor1 = getVal(1);
-  Serial.print(val_sensor1);
+  val_sensorbas = getVal(1);
+  val_sensorhaut = getVal(0);
+  if(val_sensorbas > )
+  Serial.print(val_sensorbas);
   Serial.println(" --> this is sensor");
-  // if(val_sensor1 < 500 || door_open)
+  // if(val_sensorbas < 500 || door_open)
   // {
   // digitalWrite (PIN_LED, LOW);
 
   // }
-  // else if (val_sensor1 >= 500 && !door_open)
+  // else if (val_sensorbas >= 500 && !door_open)
   // {
 
   // digitalWrite (PIN_LED, HIGH);
