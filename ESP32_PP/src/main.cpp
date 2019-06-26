@@ -32,7 +32,7 @@ void setup()
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
   pinMode (H_B_Pin, OUTPUT);
-  adc1_config_width(ADC_WIDTH_BIT_12);
+  adc1_config_width(ADC_WIDTH_BIT_12); // capteur lumière
   adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_11);
 }
 
@@ -107,21 +107,23 @@ void loop() {
     ESP_BT.println("OULALALLA faut aller voir!!!!!");
   }
   
-  val_sensorbas = getVal(1);
-  val_sensorhaut = getVal(0);
+  val_sensorbas = getVal(CAPTEUR_DU_BAS);
+  val_sensorhaut = getVal(CAPTEUR_DU_HAUT);
   // if(val_sensorbas > )
   Serial.print(val_sensorbas);
-  Serial.println(" --> this is sensor");
-  // if(val_sensorbas < 500 || door_open)
-  // {
-  // digitalWrite (PIN_LED, LOW);
+  Serial.println(" capteur bas");
+  Serial.print(val_sensorhaut);
+  Serial.println(" capteur  haut");
+  if(val_sensorbas < 1500 || door_open)
+  {
+  digitalWrite (PIN_LED, LOW);
 
-  // }
-  // else if (val_sensorbas >= 500 && !door_open)
-  // {
+  }
+  else if (val_sensorbas >= 1500 && !door_open)
+  {
 
-  // digitalWrite (PIN_LED, HIGH);
-  // }
+  digitalWrite (PIN_LED, HIGH);
+  }
   
   delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
