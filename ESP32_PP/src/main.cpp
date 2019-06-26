@@ -109,7 +109,7 @@ void loop() {
   
   val_sensorbas = getVal(1);
   val_sensorhaut = getVal(0);
-  if(val_sensorbas > )
+  // if(val_sensorbas > )
   Serial.print(val_sensorbas);
   Serial.println(" --> this is sensor");
   // if(val_sensorbas < 500 || door_open)
