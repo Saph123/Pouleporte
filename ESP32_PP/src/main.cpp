@@ -114,6 +114,8 @@ void loop() {
   Serial.println(" capteur bas");
   Serial.print(val_sensorhaut);
   Serial.println(" capteur  haut");
+ 
+  
   if(val_sensorbas < 1500 || door_open)
   {
   digitalWrite (PIN_LED, LOW);
@@ -156,6 +158,30 @@ void loop() {
         {
           ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
         }
+      if( val_sensorbas >= 3000)
+      {
+        ESP_BT.println("capteur bas obstrue");
+      }
+      else
+      {
+        ESP_BT.println("capteur bas non obstrue");
+      }
+      if( val_sensorhaut >= 3000)
+      {
+        ESP_BT.println("capteur haut obstrue");
+      }
+      else
+      {
+        ESP_BT.println("capteur haut non obstrue");
+      }
+      if(door_open && (val_sensorbas <= 3000 || val_sensorhaut <= 3000))
+      {
+        ESP_BT.println("Y'a peut-etre un lezard car pour moi la porte est pas forcement bien ouverte");
+      }
+      if(!door_open && (val_sensorbas >= 3000 || val_sensorhaut >= 3000))
+      {
+        ESP_BT.println("Y'a peut-etre un lezard car pour moi la porte est pas forcement bien fermee!");
+      }
 
     }
     else
