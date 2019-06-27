@@ -114,6 +114,7 @@ void loop() {
   Serial.println(" capteur bas");
   Serial.print(val_sensorhaut);
   Serial.println(" capteur  haut");
+  Serial.println(door_open);
  
   
   if(val_sensorbas < 1500 || door_open)

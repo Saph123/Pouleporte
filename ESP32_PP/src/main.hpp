@@ -5,5 +5,5 @@
 #include "sensor_presence.hpp"
 #include "nvs_manager.hpp"
 
-#define PIN_LED 5
+#define PIN_LED 27
 void init_all_param();
