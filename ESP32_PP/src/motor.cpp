@@ -25,9 +25,9 @@ void upCmd(bool door_open, int time_up){
   digitalWrite (H_B_Pin, HIGH);	// turn on 
   digitalWrite (H_A_Pin, LOW);	// turn on
 
-    if (time_up => 8000)
+    if (time_up > 8000)
     {
-        delay(8000)
+        delay(8000);
     }
   while( stepCnt * 100 <= (time_up - 8000)) 
   {
@@ -60,10 +60,10 @@ int stepCnt = 0;
     Serial.println("Shutting the door");
   digitalWrite (H_B_Pin, LOW);	// turn on 
   digitalWrite (H_A_Pin, HIGH);	// turn on 
-  while( stepCnt * 100 <= time_down) 
+  while( stepCnt * 50 <= time_down) 
   {
     stepCnt += 1;
-    delay(100);
+    delay(50);
     Serial.println("Closing");
     if(getVal(CAPTEUR_DU_BAS)<500)
     {
