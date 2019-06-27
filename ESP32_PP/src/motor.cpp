@@ -25,7 +25,11 @@ void upCmd(bool door_open, int time_up){
   digitalWrite (H_B_Pin, HIGH);	// turn on 
   digitalWrite (H_A_Pin, LOW);	// turn on
 
-  while( stepCnt * 100 <= time_up) 
+    if (time_up => 8000)
+    {
+        delay(8000)
+    }
+  while( stepCnt * 100 <= (time_up - 8000)) 
   {
     stepCnt += 1;
     delay(100);
