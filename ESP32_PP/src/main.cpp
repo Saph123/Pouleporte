@@ -14,6 +14,7 @@ bool safeState = false;
 int temp_threshold=0;
 int thresholdJour=1000;
 int thresholdNuit=400;
+boolean use_sensors = false;
 boolean jour=true;
 boolean firstTime=false;
 long i=0,j=0;
@@ -27,6 +28,7 @@ void setup()
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
   initSensor();
+
   initNVS();
   init_all_param();
   pinMode(PIN_LED, OUTPUT);
@@ -35,7 +37,29 @@ void setup()
   adc1_config_width(ADC_WIDTH_BIT_12); // capteur lumière
   adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_11);
 }
+void use_sensor_toggle()
+{
+  if(use_sensors)
+  {
+    use_sensors = false;
+    nvs_set("use_sensors",0);
 
+  }
+  else
+  {
+    use_sensors = true;
+    nvs_set("use_sensors",1);
+  }
+  if(use_sensors)
+  {
+    ESP_BT.println("Start using sensors!");
+  }
+  else
+  {
+    ESP_BT.println("Sensors are not used!");
+  }
+
+}
 void changeDoorState()
 {
   ESP_BT.println("Changing Door state");
@@ -117,16 +141,16 @@ void loop() {
   Serial.println(door_open);
  
   
-  if(val_sensorbas < 1500 || door_open)
-  {
-  digitalWrite (PIN_LED, LOW);
+//   if(val_sensorbas < 1500 || door_open)
+//   {
+//   digitalWrite (PIN_LED, LOW);
 
-  }
-  else if (val_sensorbas >= 1500 && !door_open)
-  {
+//   }
+//   else if (val_sensorbas >= 1500 && !door_open)
+//   {
 
-  digitalWrite (PIN_LED, HIGH);
-  }
+//   digitalWrite (PIN_LED, HIGH);
+//   }
   
   delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
@@ -159,6 +183,8 @@ void loop() {
         {
           ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
         }
+    if (use_sensors)
+    {
       if( val_sensorbas >= 3000)
       {
         ESP_BT.println("capteur bas obstrue");
@@ -183,6 +209,11 @@ void loop() {
       {
         ESP_BT.println("Y'a peut-etre un lezard car pour moi la porte est pas forcement bien fermee!");
       }
+    }
+    else
+    {
+        ESP_BT.println("sensors are not used!");
+    }
 
     }
     else
@@ -213,7 +244,7 @@ void loop() {
         if(ESP_BT.read()==80)
         {
           ESP_BT.println("UP CMD Received!");
-          upCmd(door_open, time_up);
+          upCmd(door_open, time_up, use_sensors);
           door_open=true;
         }
       }
@@ -226,7 +257,7 @@ void loop() {
             if(ESP_BT.read()==78)
             {
               ESP_BT.println("DOWN CMD Received!");
-              int err = downCmd(door_open, time_down);
+              int err = downCmd(door_open, time_down, use_sensors);
               door_open = false;
               if (err != 0)
               {
@@ -269,6 +300,15 @@ void loop() {
               nvs_set("safeState",0);
 
           }
+        }
+
+    }
+    else if(Received_char==85) //U
+    {
+        if(ESP_BT.read() == 83) //S
+        {
+            ESP_BT.println("Changing sensors state");
+            use_sensor_toggle();
         }
 
     }
@@ -371,7 +411,7 @@ void loop() {
     if(firstTime)
     {
       
-      upCmd(door_open, time_up);
+      upCmd(door_open, time_up, use_sensors);
       door_open=true;
       firstTime=false;
     }
@@ -399,7 +439,7 @@ void loop() {
     if(firstTime)
     {
       
-      downCmd(door_open, time_down);
+      downCmd(door_open, time_down, use_sensors);
       door_open=false;
       firstTime=false;
     }
@@ -426,7 +466,7 @@ void loop() {
 
 void init_all_param()
 {
-  int door_open_int,safeState_int;
+  int door_open_int,safeState_int, use_sensors_int;
   time_up= nvs_get("time_up");
   time_down=nvs_get("time_down");
   time_s=nvs_get("time_s");
@@ -434,6 +474,17 @@ void init_all_param()
   thresholdNuit=nvs_get("thresholdNuit");
   door_open_int=nvs_get("door_open");
   safeState_int=nvs_get("safeState");
+  use_sensors_int = nvs_get("use_sensors");
+
+
+  if (use_sensors_int == 1)
+  {
+    use_sensors = true;
+  }
+  else
+  {
+      use_sensors = false;
+  }
   if(safeState_int==1)
   {
     safeState=true;

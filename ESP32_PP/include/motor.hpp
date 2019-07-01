@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include "sensor_presence.hpp"
 #include "nvs_manager.hpp"
-void upCmd(bool door_open, int time_up);
-int downCmd(bool door_open, int time_down);
+void upCmd(bool door_open, int time_up, boolean use_sensors);
+int downCmd(bool door_open, int time_down, boolean use_sensors);
 void stopMotor();
 void tuningUp();
 void tuningDown();

@@ -17,7 +17,7 @@ void tuningDown(){
   digitalWrite (H_A_Pin, LOW);	// turn off 
   digitalWrite (H_B_Pin, LOW);	// turn off 
 }
-void upCmd(bool door_open, int time_up){
+void upCmd(bool door_open, int time_up, boolean use_sensors){
   int stepCnt = 0;
   if(!door_open)
   {
@@ -25,21 +25,22 @@ void upCmd(bool door_open, int time_up){
   digitalWrite (H_B_Pin, HIGH);	// turn on 
   digitalWrite (H_A_Pin, LOW);	// turn on
 
-    if (time_up > 8000)
-    {
-        delay(8000);
-    }
-  while( stepCnt * 100 <= (time_up - 8000)) 
-  {
-    stepCnt += 1;
-    delay(100);
+//     if (time_up > 8000)
+//     {
+//         delay(8000);
+//     }
+//   while( stepCnt * 100 <= (time_up - 8000)) 
+//   {
+//     stepCnt += 1;
+//     delay(100);
     Serial.println("Openin");
-    if(getVal(CAPTEUR_DU_HAUT)>4000)
-    {
-      break;
-    }
-  }
-    Serial.println("Fin de course montee");
+    // if(getVal(CAPTEUR_DU_HAUT)>4000)
+    // {
+    //   break;
+    // }
+//   }
+    // Serial.println("Fin de course montee");
+    delay(time_up);
   digitalWrite (H_A_Pin, LOW);	// turn on 
   digitalWrite (H_B_Pin, LOW);	// turn on 
   Serial.println("Turning off engine");
@@ -52,7 +53,7 @@ void upCmd(bool door_open, int time_up){
     Serial.println("Door already opened");
   }
 }
-int downCmd(bool door_open, int time_down){
+int downCmd(bool door_open, int time_down, boolean use_sensors){
 int stepCnt = 0;
   if (door_open)
   {
@@ -60,6 +61,8 @@ int stepCnt = 0;
     Serial.println("Shutting the door");
   digitalWrite (H_B_Pin, LOW);	// turn on 
   digitalWrite (H_A_Pin, HIGH);	// turn on 
+  if(use_sensors)
+  {
   while( stepCnt * 50 <= time_down) 
   {
     stepCnt += 1;
@@ -69,6 +72,12 @@ int stepCnt = 0;
     {
       break;
     }
+  }
+  }
+  else
+  {
+      Serial.println("Door is closing");
+      delay(time_down);
   }
     Serial.println("Fin de course descente");
   door_open=false;
@@ -82,6 +91,8 @@ int stepCnt = 0;
   {
     Serial.println("Door already shut");
   }
+  if(use_sensors)
+  {
     if(getVal(CAPTEUR_DU_BAS) > 3000)
   {
     // The sensor did not see the door ? Either not working or door stuck
@@ -91,5 +102,7 @@ int stepCnt = 0;
   {
     return 0;
   }
+  }
+  return 0;
 
 }
