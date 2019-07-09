@@ -2,7 +2,7 @@
 
   (general
     (thickness 1.6)
-    (drawings 15)
+    (drawings 14)
     (tracks 180)
     (zones 0)
     (modules 39)
@@ -85,9 +85,9 @@
       (subtractmaskfromsilk false)
       (outputformat 1)
       (mirror false)
-      (drillshape 0)
+      (drillshape 1)
       (scaleselection 1)
-      (outputdirectory "./"))
+      (outputdirectory ""))
   )
 
   (net 0 "")
@@ -1822,9 +1822,6 @@
     )
   )
 
-  (gr_text "POULEPORTE V1!!!\nDesigned by M.BESSON" (at 107.95 76.2) (layer F.SilkS)
-    (effects (font (size 1 1) (thickness 0.15)))
-  )
   (dimension 58.42 (width 0.15) (layer Dwgs.User)
     (gr_text "58,420 mm" (at 27.91 49.53 270) (layer Dwgs.User)
       (effects (font (size 1 1) (thickness 0.15)))
@@ -2043,7 +2040,7 @@
   (segment (start 106.68 53.37) (end 111.76 48.29) (width 0.25) (layer B.Cu) (net 43))
   (segment (start 106.68 60.96) (end 106.68 53.37) (width 0.25) (layer B.Cu) (net 43))
 
-  (zone (net 10) (net_name GND) (layer B.Cu) (tstamp 5D2677B8) (hatch edge 0.508)
+  (zone (net 10) (net_name GND) (layer B.Cu) (tstamp 5D266E41) (hatch edge 0.508)
     (connect_pads (clearance 0.508))
     (min_thickness 0.254)
     (fill yes (arc_segments 32) (thermal_gap 0.508) (thermal_bridge_width 0.508))

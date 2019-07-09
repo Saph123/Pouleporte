@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:PP-cache
 EELAYER 29 0
 EELAYER END
 $Descr A4 11693 8268
@@ -29,7 +30,7 @@ L Device:Q_PMOS_DGS Q3
 U 1 1 5CBEF915
 P 6400 4150
 F 0 "Q3" H 6605 4104 50  0000 L CNN
-F 1 "Q_PMOS_DGS" H 6605 4195 50  0000 L CNN
+F 1 "Q_PMOS_DGS" H 5800 4000 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23" H 6600 4250 50  0001 C CNN
 F 3 "~" H 6400 4150 50  0001 C CNN
 	1    6400 4150
@@ -49,109 +50,23 @@ $EndComp
 Wire Wire Line
 	4550 4950 4550 5000
 Wire Wire Line
-	4550 5000 6300 5000
-Wire Wire Line
 	6300 3950 6300 3900
 Wire Wire Line
-	6300 3900 4550 3900
-$Comp
-L ESP32-footprints-Shem-Lib:ESP32-WROOM U1
-U 1 1 5CBF4707
-P 2150 3900
-F 0 "U1" H 2125 5287 60  0000 C CNN
-F 1 "ESP32-WROOM" H 2125 5181 60  0000 C CNN
-F 2 "ESP32-footprints-Lib:ESP32-WROOM" H 2500 5250 60  0001 C CNN
-F 3 "" H 1700 4350 60  0001 C CNN
-	1    2150 3900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3050 3550 4250 3550
-Wire Wire Line
-	3050 4150 4000 4150
-Wire Wire Line
-	4000 4150 4000 3750
-Wire Wire Line
-	4000 3750 6600 3750
+	6300 3900 5400 3900
 Wire Wire Line
 	6600 3750 6600 4150
 Wire Wire Line
-	6600 4800 6600 4150
+	6600 4800 6600 4300
 Connection ~ 6600 4150
-$Comp
-L Device:R R1
-U 1 1 5CBFA1A2
-P 4050 3200
-F 0 "R1" H 4120 3246 50  0000 L CNN
-F 1 "21" H 4120 3155 50  0000 L CNN
-F 2 "Resistor_SMD:R_0201_0603Metric" V 3980 3200 50  0001 C CNN
-F 3 "~" H 4050 3200 50  0001 C CNN
-	1    4050 3200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3050 3750 3550 3750
-Wire Wire Line
-	3550 3750 3550 3350
-Wire Wire Line
-	3550 3350 4050 3350
-$Comp
-L Device:LED D2
-U 1 1 5CBFB3CF
-P 4950 2450
-F 0 "D2" V 4989 2332 50  0000 R CNN
-F 1 "IR" V 4898 2332 50  0000 R CNN
-F 2 "" H 4950 2450 50  0001 C CNN
-F 3 "~" H 4950 2450 50  0001 C CNN
-	1    4950 2450
-	0    -1   -1   0   
-$EndComp
-Wire Wire Line
-	4950 2750 4950 2600
-Wire Wire Line
-	4950 2300 4050 2300
-Text GLabel 1000 3300 0    50   Input ~ 0
-VCC
-Wire Wire Line
-	4050 2300 4050 2750
-Text GLabel 4550 2300 1    50   Input ~ 0
-VCC
-Wire Wire Line
-	1200 3300 1000 3300
-Wire Wire Line
-	4950 3050 4950 3150
-Wire Wire Line
-	4950 3150 3050 3150
-$Comp
-L Device:R R3
-U 1 1 5CBFF00A
-P 5350 4400
-F 0 "R3" V 5143 4400 50  0000 C CNN
-F 1 "MOTEUR" V 5234 4400 50  0000 C CNN
-F 2 "Resistor_THT:R_Axial_DIN0617_L17.0mm_D6.0mm_P25.40mm_Horizontal" V 5280 4400 50  0001 C CNN
-F 3 "~" H 5350 4400 50  0001 C CNN
-	1    5350 4400
-	0    1    1    0   
-$EndComp
+Text GLabel 3150 2850 2    50   Input ~ 0
+5V
 Wire Wire Line
 	4550 4300 4550 4400
 Connection ~ 4550 4400
 Wire Wire Line
 	4550 4400 4550 4550
 Wire Wire Line
-	4550 4400 5200 4400
-Wire Wire Line
-	6300 4350 6300 4400
-Wire Wire Line
-	5500 4400 6300 4400
-Connection ~ 6300 4400
-Wire Wire Line
-	6300 4400 6300 4600
-Connection ~ 4250 4100
-Wire Wire Line
-	4250 3550 4250 4100
-Wire Wire Line
-	4250 4100 4250 4750
+	4250 4100 4250 4350
 $Comp
 L Device:Q_PMOS_DGS Q1
 U 1 1 5CBF068E
@@ -163,26 +78,621 @@ F 3 "~" H 4450 4100 50  0001 C CNN
 	1    4450 4100
 	1    0    0    1   
 $EndComp
+Wire Wire Line
+	2800 2800 3150 2800
+Wire Wire Line
+	3150 2800 3150 2850
+Text GLabel 3450 2700 2    50   Input ~ 0
+GND
+Wire Wire Line
+	2800 2700 3300 2700
+Text GLabel 1100 2750 0    50   Input ~ 0
+VCC
+Wire Wire Line
+	1100 2750 1450 2750
+Wire Wire Line
+	1450 2750 1450 2800
+Text GLabel 4650 1250 1    50   Input ~ 0
+VCC
+Text GLabel 5500 5100 3    50   Input ~ 0
+GND
+Wire Wire Line
+	4550 5000 5500 5000
+Wire Wire Line
+	5500 5100 5500 5000
+Connection ~ 5500 5000
+Wire Wire Line
+	5500 5000 6300 5000
+Wire Wire Line
+	6600 3750 800  3750
+Wire Wire Line
+	800  3750 800  2300
+Wire Wire Line
+	800  2300 1450 2300
+Wire Wire Line
+	4250 4350 3550 4350
+Wire Wire Line
+	1200 4350 1200 1800
+Wire Wire Line
+	1200 1800 1450 1800
+Connection ~ 4250 4350
+Wire Wire Line
+	4250 4350 4250 4750
+Wire Wire Line
+	6300 4350 6300 4400
 $Comp
-L Device:R R2
-U 1 1 5CBFB812
-P 4950 2900
-F 0 "R2" H 5020 2946 50  0000 L CNN
-F 1 "34" H 5020 2855 50  0000 L CNN
-F 2 "Resistor_SMD:R_0201_0603Metric" V 4880 2900 50  0001 C CNN
-F 3 "~" H 4950 2900 50  0001 C CNN
-	1    4950 2900
+L Device:R R6
+U 1 1 5D2361BB
+P 5800 4400
+F 0 "R6" V 5593 4400 50  0000 C CNN
+F 1 "12" V 5684 4400 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5730 4400 50  0001 C CNN
+F 3 "~" H 5800 4400 50  0001 C CNN
+	1    5800 4400
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R7
+U 1 1 5D2368DD
+P 5800 4700
+F 0 "R7" V 5593 4700 50  0000 C CNN
+F 1 "12" V 5684 4700 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5730 4700 50  0001 C CNN
+F 3 "~" H 5800 4700 50  0001 C CNN
+	1    5800 4700
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R R5
+U 1 1 5D236A86
+P 5800 4050
+F 0 "R5" V 5593 4050 50  0000 C CNN
+F 1 "12" V 5684 4050 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" V 5730 4050 50  0001 C CNN
+F 3 "~" H 5800 4050 50  0001 C CNN
+	1    5800 4050
+	0    1    1    0   
+$EndComp
+Connection ~ 5650 4400
+Wire Wire Line
+	5200 4400 5650 4400
+Connection ~ 5950 4400
+Wire Wire Line
+	5950 4400 6300 4400
+Connection ~ 6300 4400
+Wire Wire Line
+	6300 4400 6300 4600
+Text GLabel 5400 3850 1    50   Input ~ 0
+5V
+Wire Wire Line
+	5400 3850 5400 3900
+Connection ~ 5400 3900
+Wire Wire Line
+	5400 3900 4550 3900
+$Comp
+L Connector_Generic:Conn_01x01 capteurlux1
+U 1 1 5D23AB45
+P 5250 1900
+F 0 "capteurlux1" H 5330 1896 50  0000 L CNN
+F 1 "Conn_01x01" H 5330 1851 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5250 1900 50  0001 C CNN
+F 3 "~" H 5250 1900 50  0001 C CNN
+	1    5250 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4650 1250 4650 1400
+Wire Wire Line
+	4650 1400 5050 1400
+Text GLabel 950  800  0    50   Input ~ 0
+GND
+$Comp
+L Connector_Generic:Conn_01x01 3V3_lux1
+U 1 1 5D239E3D
+P 5250 1400
+F 0 "3V3_lux1" H 5330 1396 50  0000 L CNN
+F 1 "Conn_01x01" H 5330 1351 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5250 1400 50  0001 C CNN
+F 3 "~" H 5250 1400 50  0001 C CNN
+	1    5250 1400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2800 1500 3800 1500
+Wire Wire Line
+	3800 1500 3800 1900
+Wire Wire Line
+	3800 1900 5050 1900
+$Comp
+L Connector_Generic:Conn_01x01 GND_BAT1
+U 1 1 5D24DA6B
+P 1250 800
+F 0 "GND_BAT1" H 1330 796 50  0000 L CNN
+F 1 "Conn_01x01" H 1330 751 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 1250 800 50  0001 C CNN
+F 3 "~" H 1250 800 50  0001 C CNN
+	1    1250 800 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1050 800  950  800 
+Text Notes 850  600  0    50   ~ 0
+For battery
+Text Notes 5600 1700 0    50   ~ 0
+Lux sensor
+Text GLabel 900  1000 0    50   Input ~ 0
+5V
+$Comp
+L Connector_Generic:Conn_01x01 5V_batt1
+U 1 1 5D24EDDE
+P 1250 1000
+F 0 "5V_batt1" H 1330 996 50  0000 L CNN
+F 1 "Conn_01x01" H 1330 951 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 1250 1000 50  0001 C CNN
+F 3 "~" H 1250 1000 50  0001 C CNN
+	1    1250 1000
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	900  1000 1050 1000
+$Comp
+L Connector_Generic:Conn_01x01 backup_out1
+U 1 1 5D251DB3
+P 3750 4550
+F 0 "backup_out1" H 3830 4546 50  0000 L CNN
+F 1 "Conn_01x01" H 3830 4501 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 3750 4550 50  0001 C CNN
+F 3 "~" H 3750 4550 50  0001 C CNN
+	1    3750 4550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3550 4550 3550 4350
+Connection ~ 3550 4350
+Wire Wire Line
+	3550 4350 1200 4350
+$Comp
+L Connector_Generic:Conn_01x01 backup_out2
+U 1 1 5D252CB4
+P 7100 4300
+F 0 "backup_out2" H 7180 4296 50  0000 L CNN
+F 1 "Conn_01x01" H 7180 4251 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 7100 4300 50  0001 C CNN
+F 3 "~" H 7100 4300 50  0001 C CNN
+	1    7100 4300
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	6600 4300 6900 4300
+Connection ~ 6600 4300
+Wire Wire Line
+	6600 4300 6600 4150
+Wire Wire Line
+	5250 2150 3600 2150
+Wire Wire Line
+	3600 1700 2800 1700
+Wire Wire Line
+	4700 2400 4850 2400
+Wire Wire Line
+	5250 2400 5250 2550
+$Comp
+L Connector_Generic:Conn_01x01 capteurNChaut1
+U 1 1 5D253FF1
+P 5450 2150
+F 0 "capteurNChaut1" H 5530 2146 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2101 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5450 2150 50  0001 C CNN
+F 3 "~" H 5450 2150 50  0001 C CNN
+	1    5450 2150
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:LED D1
-U 1 1 5CBF8D32
-P 4050 2900
-F 0 "D1" V 4089 2783 50  0000 R CNN
-F 1 "LED" V 3998 2783 50  0000 R CNN
-F 2 "LED_THT:LED_D3.0mm_Horizontal_O6.35mm_Z10.0mm" H 4050 2900 50  0001 C CNN
-F 3 "~" H 4050 2900 50  0001 C CNN
-	1    4050 2900
+L Connector_Generic:Conn_01x01 capteur_NC3.3Vbas1
+U 1 1 5D25EACD
+P 5450 3100
+F 0 "capteur_NC3.3Vbas1" H 5530 3096 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 3051 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5450 3100 50  0001 C CNN
+F 3 "~" H 5450 3100 50  0001 C CNN
+	1    5450 3100
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 capteurNCbas1
+U 1 1 5D25EF97
+P 5450 2900
+F 0 "capteurNCbas1" H 5530 2896 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2851 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5450 2900 50  0001 C CNN
+F 3 "~" H 5450 2900 50  0001 C CNN
+	1    5450 2900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5250 2900 3400 2900
+Wire Wire Line
+	3400 1800 2800 1800
+Wire Wire Line
+	5250 3100 4850 3100
+Wire Wire Line
+	4850 3100 4850 2400
+Connection ~ 4850 2400
+Wire Wire Line
+	4850 2400 5250 2400
+$Comp
+L Connector_Generic:Conn_01x01 capteur_NC3.3Vhaut1
+U 1 1 5D23A9E3
+P 5450 2550
+F 0 "capteur_NC3.3Vhaut1" H 5530 2546 50  0000 L CNN
+F 1 "Conn_01x01" H 5530 2501 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5450 2550 50  0001 C CNN
+F 3 "~" H 5450 2550 50  0001 C CNN
+	1    5450 2550
+	1    0    0    -1  
+$EndComp
+Text GLabel 4700 2400 0    50   Input ~ 0
+VCC
+Wire Wire Line
+	3400 2900 3400 1800
+Wire Wire Line
+	3600 2150 3600 1700
+$Comp
+L MCU_Espressif:ESP32_DEVKITV1 U1
+U 1 1 5CC0EF77
+P 3350 2550
+F 0 "U1" H 2125 4155 50  0000 C CNN
+F 1 "ESP32_DEVKITV1" H 2125 4064 50  0000 C CNN
+F 2 "wemos:devkt1_online" H 2125 3973 50  0000 C CNN
+F 3 "" H 2200 3150 50  0001 C CNN
+	1    3350 2550
+	1    0    0    -1  
+$EndComp
+$Comp
+L tcrt5000:TCRT5000 capteurhaut1
+U 1 1 5D272262
+P 9750 1400
+F 0 "capteurhaut1" H 10698 1571 50  0000 L CNN
+F 1 "TCRT5000" H 10698 1480 50  0000 L CNN
+F 2 "wemos:TCRT5000" H 9750 1400 50  0001 C CNN
+F 3 "" H 9750 1400 50  0001 C CNN
+	1    9750 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L tcrt5000:TCRT5000 capteurbas1
+U 1 1 5D2739B7
+P 9750 3450
+F 0 "capteurbas1" H 10698 3666 50  0000 L CNN
+F 1 "TCRT5000" H 10698 3575 50  0000 L CNN
+F 2 "wemos:TCRT5000" H 10698 3484 50  0000 L CNN
+F 3 "" H 9750 3450 50  0001 C CNN
+	1    9750 3450
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0101
+U 1 1 5D27504C
+P 3300 2700
+F 0 "#PWR0101" H 3300 2450 50  0001 C CNN
+F 1 "GND" H 3305 2527 50  0000 C CNN
+F 2 "" H 3300 2700 50  0001 C CNN
+F 3 "" H 3300 2700 50  0001 C CNN
+	1    3300 2700
+	1    0    0    -1  
+$EndComp
+Connection ~ 3300 2700
+Wire Wire Line
+	3300 2700 3450 2700
+$Comp
+L Device:R R1
+U 1 1 5D2757BD
+P 5750 750
+F 0 "R1" V 5543 750 50  0000 C CNN
+F 1 "33" V 5634 750 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 5680 750 50  0001 C CNN
+F 3 "~" H 5750 750 50  0001 C CNN
+	1    5750 750 
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	5600 750  3200 750 
+Wire Wire Line
+	3200 750  3200 1900
+Wire Wire Line
+	3200 1900 2800 1900
+Wire Wire Line
+	5900 750  6200 750 
+Text GLabel 7550 900  1    50   Input ~ 0
+VCC
+$Comp
+L Device:R R2
+U 1 1 5D27656E
+P 8050 1250
+F 0 "R2" V 7843 1250 50  0000 C CNN
+F 1 "10k" V 7934 1250 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7980 1250 50  0001 C CNN
+F 3 "~" H 8050 1250 50  0001 C CNN
+	1    8050 1250
 	0    -1   -1   0   
 $EndComp
+$Comp
+L Device:R R4
+U 1 1 5D28211A
+P 8050 1100
+F 0 "R4" V 7843 1100 50  0000 C CNN
+F 1 "10k" V 7934 1100 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 7980 1100 50  0001 C CNN
+F 3 "~" H 8050 1100 50  0001 C CNN
+	1    8050 1100
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	7500 900  7500 1100
+Wire Wire Line
+	7500 1100 7550 1100
+Wire Wire Line
+	7500 900  7550 900 
+Wire Wire Line
+	7200 1550 7050 1550
+Wire Wire Line
+	3300 1550 3300 2000
+Wire Wire Line
+	3300 2000 2800 2000
+$Comp
+L Device:R R3
+U 1 1 5D287927
+P 6900 1550
+F 0 "R3" V 6693 1550 50  0000 C CNN
+F 1 "33" V 6784 1550 50  0000 C CNN
+F 2 "Resistor_SMD:R_0603_1608Metric" V 6830 1550 50  0001 C CNN
+F 3 "~" H 6900 1550 50  0001 C CNN
+	1    6900 1550
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	6750 1550 3300 1550
+$Comp
+L Connector_Generic:Conn_01x01 CT2
+U 1 1 5D28C081
+P 9100 1050
+F 0 "CT2" H 9180 1046 50  0000 L CNN
+F 1 "Conn_01x01" H 9180 1001 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 9100 1050 50  0001 C CNN
+F 3 "~" H 9100 1050 50  0001 C CNN
+	1    9100 1050
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 AT1
+U 1 1 5D28C087
+P 6400 750
+F 0 "AT1" H 6480 746 50  0000 L CNN
+F 1 "Conn_01x01" H 6480 701 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 6400 750 50  0001 C CNN
+F 3 "~" H 6400 750 50  0001 C CNN
+	1    6400 750 
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 GNDT1
+U 1 1 5D28C08D
+P 9100 1600
+F 0 "GNDT1" H 9180 1596 50  0000 L CNN
+F 1 "Conn_01x01" H 9180 1551 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 9100 1600 50  0001 C CNN
+F 3 "~" H 9100 1600 50  0001 C CNN
+	1    9100 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10100 1550 10250 1550
+$Comp
+L power:GND #PWR0102
+U 1 1 5D295B3F
+P 8700 1600
+F 0 "#PWR0102" H 8700 1350 50  0001 C CNN
+F 1 "GND" H 8705 1427 50  0000 C CNN
+F 2 "" H 8700 1600 50  0001 C CNN
+F 3 "" H 8700 1600 50  0001 C CNN
+	1    8700 1600
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 1600 8900 1600
+$Comp
+L Connector_Generic:Conn_01x01 GNDT2
+U 1 1 5D29BC11
+P 9100 1900
+F 0 "GNDT2" H 9180 1896 50  0000 L CNN
+F 1 "Conn_01x01" H 9180 1851 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 9100 1900 50  0001 C CNN
+F 3 "~" H 9100 1900 50  0001 C CNN
+	1    9100 1900
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR0103
+U 1 1 5D29BC17
+P 8700 1900
+F 0 "#PWR0103" H 8700 1650 50  0001 C CNN
+F 1 "GND" H 8705 1727 50  0000 C CNN
+F 2 "" H 8700 1900 50  0001 C CNN
+F 3 "" H 8700 1900 50  0001 C CNN
+	1    8700 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8700 1900 8900 1900
+Wire Wire Line
+	8200 1100 8900 1100
+Wire Wire Line
+	8900 1100 8900 1050
+Wire Wire Line
+	7550 1100 7550 1250
+Wire Wire Line
+	7550 1250 7900 1250
+Connection ~ 7550 1100
+Wire Wire Line
+	7550 1100 7900 1100
+$Comp
+L Connector_Generic:Conn_01x01 CT1
+U 1 1 5D2AB459
+P 8600 1250
+F 0 "CT1" H 8680 1246 50  0000 L CNN
+F 1 "Conn_01x01" H 8680 1201 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 8600 1250 50  0001 C CNN
+F 3 "~" H 8600 1250 50  0001 C CNN
+	1    8600 1250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8200 1250 8400 1250
+$Comp
+L Connector_Generic:Conn_01x01 AT2
+U 1 1 5D2AD5EA
+P 7400 1550
+F 0 "AT2" H 7480 1546 50  0000 L CNN
+F 1 "Conn_01x01" H 7480 1501 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 7400 1550 50  0001 C CNN
+F 3 "~" H 7400 1550 50  0001 C CNN
+	1    7400 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 remote_gnd1
+U 1 1 5D2ADEFC
+P 10450 1700
+F 0 "remote_gnd1" H 10530 1696 50  0000 L CNN
+F 1 "Conn_01x01" H 10530 1651 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 10450 1700 50  0001 C CNN
+F 3 "~" H 10450 1700 50  0001 C CNN
+	1    10450 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 remote_AT1
+U 1 1 5D2AE23C
+P 9900 750
+F 0 "remote_AT1" H 9980 746 50  0000 L CNN
+F 1 "Conn_01x01" H 9980 701 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 9900 750 50  0001 C CNN
+F 3 "~" H 9900 750 50  0001 C CNN
+	1    9900 750 
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	10100 750  10100 1000
+Wire Wire Line
+	10250 1700 10250 1550
+Connection ~ 10250 1550
+Wire Wire Line
+	10250 1550 10400 1550
+$Comp
+L Connector_Generic:Conn_01x01 remote_CT1
+U 1 1 5D2B569D
+P 10650 800
+F 0 "remote_CT1" H 10730 796 50  0000 L CNN
+F 1 "Conn_01x01" H 10730 751 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 10650 800 50  0001 C CNN
+F 3 "~" H 10650 800 50  0001 C CNN
+	1    10650 800 
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10400 1000 10400 800 
+Wire Wire Line
+	10400 800  10450 800 
+$Comp
+L Connector_Generic:Conn_01x01 remote_AT2
+U 1 1 5D2B84C4
+P 9900 2800
+F 0 "remote_AT2" H 9980 2796 50  0000 L CNN
+F 1 "Conn_01x01" H 9980 2751 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 9900 2800 50  0001 C CNN
+F 3 "~" H 9900 2800 50  0001 C CNN
+	1    9900 2800
+	-1   0    0    1   
+$EndComp
+Wire Wire Line
+	10100 2800 10100 3050
+$Comp
+L Connector_Generic:Conn_01x01 remote_CT2
+U 1 1 5D2B84CB
+P 10650 2850
+F 0 "remote_CT2" H 10730 2846 50  0000 L CNN
+F 1 "Conn_01x01" H 10730 2801 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 10650 2850 50  0001 C CNN
+F 3 "~" H 10650 2850 50  0001 C CNN
+	1    10650 2850
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10400 3050 10400 2850
+Wire Wire Line
+	10400 2850 10450 2850
+$Comp
+L Connector_Generic:Conn_01x01 remote_gnd2
+U 1 1 5D2BB64E
+P 10400 3950
+F 0 "remote_gnd2" H 10480 3946 50  0000 L CNN
+F 1 "Conn_01x01" H 10480 3901 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 10400 3950 50  0001 C CNN
+F 3 "~" H 10400 3950 50  0001 C CNN
+	1    10400 3950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10200 3600 10100 3600
+Wire Wire Line
+	10200 3600 10200 3950
+Wire Wire Line
+	10400 3600 10200 3600
+Connection ~ 10200 3600
+Wire Wire Line
+	5650 4400 5650 4700
+Wire Wire Line
+	5950 4400 5950 4700
+Wire Wire Line
+	5650 4050 5650 4400
+Wire Wire Line
+	5950 4050 5950 4400
+$Comp
+L Connector_Generic:Conn_01x01 GNDlux1
+U 1 1 5D2F061C
+P 5250 1700
+F 0 "GNDlux1" H 5330 1696 50  0000 L CNN
+F 1 "Conn_01x01" H 5330 1651 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5250 1700 50  0001 C CNN
+F 3 "~" H 5250 1700 50  0001 C CNN
+	1    5250 1700
+	1    0    0    -1  
+$EndComp
+Text GLabel 4900 1700 0    50   Input ~ 0
+GND
+Wire Wire Line
+	4900 1700 5050 1700
+$Comp
+L Connector_Generic:Conn_01x01 MOT1
+U 1 1 5D30AFA3
+P 5000 4600
+F 0 "MOT1" H 5080 4596 50  0000 L CNN
+F 1 "Conn_01x01" H 5080 4551 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5000 4600 50  0001 C CNN
+F 3 "~" H 5000 4600 50  0001 C CNN
+	1    5000 4600
+	0    1    1    0   
+$EndComp
+$Comp
+L Connector_Generic:Conn_01x01 MOT2
+U 1 1 5D30AFA9
+P 5200 4600
+F 0 "MOT2" H 5280 4596 50  0000 L CNN
+F 1 "Conn_01x01" H 5280 4551 50  0001 L CNN
+F 2 "Connector_Pin:Pin_D1.2mm_L11.3mm_W3.0mm_Flat" H 5200 4600 50  0001 C CNN
+F 3 "~" H 5200 4600 50  0001 C CNN
+	1    5200 4600
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	4550 4400 5000 4400
 $EndSCHEMATC
