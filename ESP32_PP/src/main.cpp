@@ -17,7 +17,7 @@ int thresholdNuit=400;
 boolean use_sensors = false;
 boolean jour=true;
 boolean firstTime=false;
-long i=0,j=0;
+long i=0,j=0,tempo_bluetooth=0;
 boolean door_open=false;
 
 
@@ -28,7 +28,7 @@ void setup()
   Serial.begin(115200);
   ESP_BT.begin("PoulePorte"); //Name of your Bluetooth Signal
   initSensor();
-
+  tempo_bluetooth = 0;
   initNVS();
   init_all_param();
   pinMode(PIN_LED, OUTPUT);
@@ -125,6 +125,17 @@ int parseSerial(int digits,int limitDown,int limitUp)
 }
 
 void loop() {
+  if(tempo_bluetooth<1200)
+  {
+    delay(500); // On fait des délai de 500 ms pour éviter la latence bluetooth
+    tempo_bluetooth++;
+  }
+  else
+  {
+    delay(500); // Plus de contrainte de latence
+    ESP_BT.end();
+  }
+  
   if(safeState)
   {
     digitalWrite(PIN_LED, HIGH);
@@ -152,7 +163,7 @@ void loop() {
 //   digitalWrite (PIN_LED, HIGH);
 //   }
   
-  delay(500);
+
    val = adc1_get_raw(ADC1_CHANNEL_0);
     
   if(ESP_BT.available()) // Manage the bluetooth serial port
