@@ -1,6 +1,5 @@
-
 #include "main.hpp"
-
+#define TEMPOBLUETOOTH 1200
 BluetoothSerial ESP_BT;
 int val=0;
 int val_sensorbas=0;
@@ -125,7 +124,7 @@ int parseSerial(int digits,int limitDown,int limitUp)
 }
 
 void loop() {
-  if(tempo_bluetooth<1200)
+  if(tempo_bluetooth<TEMPOBLUETOOTH)
   {
     delay(500); // On fait des délai de 500 ms pour éviter la latence bluetooth
     tempo_bluetooth++;
@@ -168,6 +167,7 @@ void loop() {
     
   if(ESP_BT.available()) // Manage the bluetooth serial port
   {
+    tempo_bluetooth=0;
     if(jour)
     {
       // ESP_BT.println("Il fait jour");
@@ -181,7 +181,10 @@ void loop() {
       ESP_BT.print("Temps U/D: ");
       ESP_BT.print(time_up);
       ESP_BT.print("/");
-      ESP_BT.println(time_down);
+      ESP_BT.println(time_down);      
+      ESP_BT.print(TEMPOBLUETOOTH - tempo_bluetooth);
+      ESP_BT.println("secs avant desactivation bluetooth");
+      
       if(door_open)
       {
         ESP_BT.println("Door is opened for me");
@@ -240,6 +243,8 @@ void loop() {
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
+      ESP_BT.print(TEMPOBLUETOOTH - tempo_bluetooth);
+      ESP_BT.println("secs avant desactivation bluetooth");
       if((time_s-i)/2 != time_up)
       {
         ESP_BT.print((time_s-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
@@ -430,6 +435,11 @@ void loop() {
       if(val<thresholdNuit)
       {
         i++;
+        tempo_bluetooth = 0;
+        if(!ESP_BT.isReady())
+        {
+          ESP_BT.begin("PoulePorte");
+        }
         if (i>time_s)
         {
           i=0;
@@ -458,6 +468,11 @@ void loop() {
           if(val > thresholdJour)
       {
         i++;
+        tempo_bluetooth = 0;
+        if(!ESP_BT.isReady())
+        {
+          ESP_BT.begin("PoulePorte");
+        }
         if (i > time_s)
         {
           i=0;
