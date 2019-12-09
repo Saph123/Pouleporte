@@ -62,6 +62,7 @@ void use_sensor_toggle()
 }
 void changeDoorState()
 {
+
   ESP_BT.println("Changing Door state");
   if(door_open)
   {
@@ -125,33 +126,17 @@ int parseSerial(int digits,int limitDown,int limitUp)
 }
 
 void loop() {
-  if(safeState)
-  {
-    digitalWrite(PIN_LED, HIGH);
-    ESP_BT.println("OULALALLA faut aller voir!!!!!");
-  }
+  //   esp_sleep_enable_timer_wakeup(10 * 1000000);
+  // esp_deep_sleep_start();
+
   
   val_sensorbas = getVal(CAPTEUR_DU_BAS);
   val_sensorhaut = getVal(CAPTEUR_DU_HAUT);
-  // if(val_sensorbas > )
-  Serial.print(val_sensorbas);
-  Serial.println(" capteur bas");
-  Serial.print(val_sensorhaut);
-  Serial.println(" capteur  haut");
+
+
   Serial.println(door_open);
  
-  
-//   if(val_sensorbas < 1500 || door_open)
-//   {
-//   digitalWrite (PIN_LED, LOW);
 
-//   }
-//   else if (val_sensorbas >= 1500 && !door_open)
-//   {
-
-//   digitalWrite (PIN_LED, HIGH);
-//   }
-  
   delay(500);
    val = adc1_get_raw(ADC1_CHANNEL_0);
     
@@ -229,6 +214,14 @@ void loop() {
       ESP_BT.print(time_up);
       ESP_BT.print("/");
       ESP_BT.println(time_down);
+      if(door_open)
+      {
+        ESP_BT.println("Door is opened for me");
+      }
+      else
+      {
+          ESP_BT.println("Door is closed for me");
+      }
       if((time_s-i)/2 != time_up)
       {
         ESP_BT.print((time_s-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
@@ -413,6 +406,7 @@ void loop() {
       
       upCmd(door_open, time_up, use_sensors);
       door_open=true;
+      nvs_set("firstTime",0);
       firstTime=false;
     }
     Serial.println("Au turbin les poulax: jour");
@@ -422,6 +416,8 @@ void loop() {
         if (i>time_s)
         {
           i=0;
+          nvs_set("firstTime",1);
+          nvs_set("jour", 0);
           firstTime=true;
           jour=false;
         }
@@ -435,12 +431,13 @@ void loop() {
   //Nuit mode
    else
   {
-    // if firsttime entering night mode then you close the door
+    // if firstTime entering night mode then you close the door
     if(firstTime)
     {
       
       downCmd(door_open, time_down, use_sensors);
       door_open=false;
+      nvs_set("firstTime",0);
       firstTime=false;
     }
     Serial.println("Dodo les poulish : nuit");
@@ -450,6 +447,8 @@ void loop() {
         if (i > time_s)
         {
           i=0;
+          nvs_set("firstTime", 1);
+          nvs_set("jour", 1);
           firstTime=true;
           jour=true;
         }
@@ -466,7 +465,7 @@ void loop() {
 
 void init_all_param()
 {
-  int door_open_int,safeState_int, use_sensors_int;
+  int door_open_int,safeState_int, use_sensors_int, jour_int, firstTime_int;
   time_up= nvs_get("time_up");
   time_down=nvs_get("time_down");
   time_s=nvs_get("time_s");
@@ -475,6 +474,8 @@ void init_all_param()
   door_open_int=nvs_get("door_open");
   safeState_int=nvs_get("safeState");
   use_sensors_int = nvs_get("use_sensors");
+  jour_int = nvs_get("jour");
+  firstTime_int = nvs_get("firstTime");
 
 
   if (use_sensors_int == 1)
@@ -501,6 +502,22 @@ void init_all_param()
   {
     door_open=true;
   }
+  if (jour_int == 0)
+  {
+    jour = false;
+  }
+  else
+  {
+    jour = true;
+  }
+  if(firstTime_int == 1)
+  {
+    firstTime = true;
+  }
+  else
+  {
+    firstTime = false;
+  }
   if (time_up==0xDEADBEEF)
   {
     Serial.println("First boot I guess");
@@ -516,6 +533,8 @@ void init_all_param()
     nvs_set("time_s",time_s);
     nvs_set("thresholdJour",thresholdJour);
     nvs_set("thresholdNuit",thresholdNuit);
+    nvs_set("jour", 1);
+    nvs_set("firstTime", 0);
     if(safeState)
     {
     nvs_set("safeState",1);
