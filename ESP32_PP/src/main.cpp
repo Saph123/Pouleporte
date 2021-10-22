@@ -1,8 +1,9 @@
 
 #include "main.hpp"
-
+#define MOVINGAVERAGE 7
 BluetoothSerial ESP_BT;
 int val=0;
+int tmpval[MOVINGAVERAGE] = {0};
 int val_sensorbas=0;
 int val_sensorhaut=0;
 int Received_char=0,receivedValue=0;
@@ -129,7 +130,7 @@ void loop() {
   //   esp_sleep_enable_timer_wakeup(10 * 1000000);
   // esp_deep_sleep_start();
 
-  
+  int sum = 0;
   val_sensorbas = getVal(CAPTEUR_DU_BAS);
   val_sensorhaut = getVal(CAPTEUR_DU_HAUT);
 
@@ -138,16 +139,25 @@ void loop() {
  
 
   delay(500);
-   val = adc1_get_raw(ADC1_CHANNEL_0);
-    
+  for(int i =1; i < (MOVINGAVERAGE - 1); i++){ // moving average on last 7 values
+    tmpval[i] = tmpval[i-1];
+  }
+  tmpval[MOVINGAVERAGE-1] = adc1_get_raw(ADC1_CHANNEL_0);
+  for(int i = 0; i < MOVINGAVERAGE; i++)
+  {
+    sum += tmpval[i];
+  }
+  val = sum/MOVINGAVERAGE;
   if(ESP_BT.available()) // Manage the bluetooth serial port
   {
     if(jour)
     {
       // ESP_BT.println("Il fait jour");
       ESP_BT.println("Jour");
-      ESP_BT.print("Capteur lum:");
+      ESP_BT.print("Capteur lum moy:");
       ESP_BT.println(val);
+      ESP_BT.print("Capteur lum raw:");
+      ESP_BT.println(tmpval[MOVINGAVERAGE-1]);
       ESP_BT.print("Tj/Tn: ");
       ESP_BT.print(thresholdJour);
       ESP_BT.print("/");
