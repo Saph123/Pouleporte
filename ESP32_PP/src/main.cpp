@@ -9,8 +9,10 @@ int val_sensorhaut=0;
 int Received_char=0,receivedValue=0;
 long time_up=10400;
 long time_down=6300;
-long time_s=900;
+long delai_fermeture=900;
+long delai_ouverture=1800;
 int k=0;
+int cur_index_avg = 0;
 bool safeState = false;
 int temp_threshold=0;
 int thresholdJour=1000;
@@ -139,13 +141,14 @@ void loop() {
  
 
   delay(500);
-  for(int i =1; i < (MOVINGAVERAGE - 1); i++){ // moving average on last 7 values
-    tmpval[i] = tmpval[i-1];
-  }
-  tmpval[MOVINGAVERAGE-1] = adc1_get_raw(ADC1_CHANNEL_0);
-  for(int i = 0; i < MOVINGAVERAGE; i++)
+    tmpval[cur_index_avg] = adc1_get_raw(ADC1_CHANNEL_0);
+    cur_index_avg++;
+    if (cur_index_avg == MOVINGAVERAGE){
+      cur_index_avg = 0;
+    }
+  for(int h = 0; h < MOVINGAVERAGE; h++)
   {
-    sum += tmpval[i];
+    sum += tmpval[h];
   }
   val = sum/MOVINGAVERAGE;
   if(ESP_BT.available()) // Manage the bluetooth serial port
@@ -156,6 +159,10 @@ void loop() {
       ESP_BT.println("Jour");
       ESP_BT.print("Capteur lum moy:");
       ESP_BT.println(val);
+      ESP_BT.print("Delai ouverture:");
+      ESP_BT.println(delai_ouverture);
+      ESP_BT.print("Delai fermeture:");
+      ESP_BT.println(delai_fermeture);
       ESP_BT.print("Capteur lum raw:");
       ESP_BT.println(tmpval[MOVINGAVERAGE-1]);
       ESP_BT.print("Tj/Tn: ");
@@ -174,9 +181,9 @@ void loop() {
       {
           ESP_BT.println("Door is closed for me");
       }
-      if((time_s-i)/2 != time_down)
+      if((delai_fermeture-i)/2 != 0)
         {
-          ESP_BT.print((time_s-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
+          ESP_BT.print((delai_fermeture-i)/2); ESP_BT.println(" secondes restantes avant fermeture");
         }
     if (use_sensors)
     {
@@ -215,6 +222,10 @@ void loop() {
     {
       ESP_BT.println("Nuit");
       ESP_BT.println(val);
+      ESP_BT.print("Delai ouverture:");
+      ESP_BT.println(delai_ouverture);
+      ESP_BT.print("Delai fermeture:");
+      ESP_BT.println(delai_fermeture);
       ESP_BT.print("Tj/Tn: ");
       ESP_BT.print(thresholdJour);
       ESP_BT.print("/");
@@ -232,9 +243,9 @@ void loop() {
       {
           ESP_BT.println("Door is closed for me");
       }
-      if((time_s-i)/2 != time_up)
+      if((delai_ouverture-i)/2 != 0)
       {
-        ESP_BT.print((time_s-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
+        ESP_BT.print((delai_ouverture-i)/2);ESP_BT.println(" secondes restantes avant ouverture");
       }
     }
     Received_char=ESP_BT.read();
@@ -321,11 +332,24 @@ void loop() {
       Received_char=ESP_BT.read();
       if(Received_char==84) //T
       {
-        temp_threshold= parseSerial(4,0,2000);
-        if (temp_threshold!=-1)
+        Received_char=ESP_BT.read();
+        if(Received_char==70 || Received_char==79) //F or O for each delay
         {
-        time_s =temp_threshold;
-        nvs_set("time_s",time_s);
+          temp_threshold= parseSerial(4,0,2000);
+          if (temp_threshold!=-1)
+          {
+            if(Received_char==70)
+            {
+
+              delai_fermeture = temp_threshold;
+              nvs_set("delai_fermeture", delai_fermeture);
+            }
+            else{
+              delai_ouverture = temp_threshold;
+              nvs_set("delai_ouverture", delai_ouverture);
+
+            }
+          }
         }
         
       }
@@ -423,7 +447,7 @@ void loop() {
       if(val<thresholdNuit)
       {
         i++;
-        if (i>time_s)
+        if (i>delai_fermeture)
         {
           i=0;
           nvs_set("firstTime",1);
@@ -454,7 +478,7 @@ void loop() {
           if(val > thresholdJour)
       {
         i++;
-        if (i > time_s)
+        if (i > delai_ouverture)
         {
           i=0;
           nvs_set("firstTime", 1);
@@ -478,7 +502,8 @@ void init_all_param()
   int door_open_int,safeState_int, use_sensors_int, jour_int, firstTime_int;
   time_up= nvs_get("time_up");
   time_down=nvs_get("time_down");
-  time_s=nvs_get("time_s");
+  delai_fermeture=nvs_get("delai_fermeture");
+  delai_ouverture=nvs_get("delai_ouverture");
   thresholdJour=nvs_get("thresholdJour");
   thresholdNuit=nvs_get("thresholdNuit");
   door_open_int=nvs_get("door_open");
@@ -534,13 +559,15 @@ void init_all_param()
     // for first time, we initialise to default values
     time_up=10400;
     time_down=6300;
-    time_s=900;
+    delai_fermeture=900;
+    delai_ouverture=900;
     thresholdJour=1000;
     thresholdNuit=400;
     door_open=false;
     nvs_set("time_up",time_up);
     nvs_set("time_down",time_down);
-    nvs_set("time_s",time_s);
+    nvs_set("delai_fermeture",delai_fermeture);
+    nvs_set("delai_ouverture",delai_ouverture);
     nvs_set("thresholdJour",thresholdJour);
     nvs_set("thresholdNuit",thresholdNuit);
     nvs_set("jour", 1);

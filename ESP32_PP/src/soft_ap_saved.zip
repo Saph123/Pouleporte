@@ -18,7 +18,7 @@ int Received_char=0,receivedValue=0;
 String SendHTML(uint8_t upCmd,uint8_t downCmd);
 long time_up=10000;
 long time_down=5000;
-long time_s=900;
+long delai_fermeture=900;
 int k=0;
 int temp_threshold=0;
 int threshold_jour=1000;
@@ -285,7 +285,7 @@ void loop() {
       if(val<thresholdNuit)
       {
         i++;
-        if (i>time_s)
+        if (i>delai_fermeture)
         {
           i=0;
           firstTime=true;
@@ -312,7 +312,7 @@ void loop() {
           if(val>threshold_jour)
       {
         i++;
-        if (i>time_s)
+        if (i>delai_fermeture)
         {
           i=0;
           firstTime=true;
