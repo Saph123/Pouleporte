@@ -1,3 +1,4 @@
 (sym_lib_table
-  (lib (name MCU_Espressif)(type Legacy)(uri ${KIPRJMOD}/MCU_Espressif.lib)(options "")(descr ""))
+  (lib (name "MCU_Espressif")(type "Legacy")(uri "${KIPRJMOD}/MCU_Espressif.lib")(options "")(descr ""))
+  (lib (name "PP-rescue")(type "Legacy")(uri "${KIPRJMOD}/PP-rescue.lib")(options "")(descr ""))
 )
