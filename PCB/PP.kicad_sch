@@ -2247,7 +2247,7 @@
     (uuid 91e4ba58-c38b-42d8-a298-d84c15b03b85)
     (property "Reference" "J1" (id 0) (at 121.92 10.16 0))
     (property "Value" "USB_B_Micro" (id 1) (at 121.92 12.7 0))
-    (property "Footprint" "Connector_USB:USB_Micro-B_Wuerth_629105150521" (id 2) (at 125.73 24.13 0)
+    (property "Footprint" "usb:USB_aliexpress" (id 2) (at 125.73 24.13 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 125.73 24.13 0)
@@ -2450,7 +2450,7 @@
       (reference "C4") (unit 1) (value "1uF") (footprint "Capacitor_SMD:C_0603_1608Metric")
     )
     (path "/91e4ba58-c38b-42d8-a298-d84c15b03b85"
-      (reference "J1") (unit 1) (value "USB_B_Micro") (footprint "Connector_USB:USB_Micro-B_Wuerth_629105150521")
+      (reference "J1") (unit 1) (value "USB_B_Micro") (footprint "usb:USB_aliexpress")
     )
     (path "/1d26900c-7759-4dc0-846e-9e4eb54777bf"
       (reference "J2") (unit 1) (value "Conn_01x06_Female") (footprint "TerminalBlock_Phoenix:TerminalBlock_Phoenix_MKDS-1,5-6_1x06_P5.00mm_Horizontal")
