@@ -335,7 +335,7 @@ void loop() {
         Received_char=ESP_BT.read();
         if(Received_char==70 || Received_char==79) //F or O for each delay
         {
-          temp_threshold= parseSerial(4,0,2000);
+          temp_threshold= parseSerial(4,0,9999);
           if (temp_threshold!=-1)
           {
             if(Received_char==70)
