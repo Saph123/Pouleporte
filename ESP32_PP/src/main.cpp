@@ -36,9 +36,13 @@ void setup()
   init_all_param();
   pinMode(PIN_LED, OUTPUT);
   pinMode (H_A_Pin, OUTPUT);
+  pinMode (N_SLEEP_PIN, OUTPUT);
+  digitalWrite(N_SLEEP_PIN, HIGH);
   pinMode (H_B_Pin, OUTPUT);
   adc1_config_width(ADC_WIDTH_BIT_12); // capteur lumière
   adc1_config_channel_atten(ADC1_CHANNEL_0,ADC_ATTEN_DB_11);
+    digitalWrite (H_A_Pin, LOW);	// turn off 
+  digitalWrite (H_B_Pin, LOW);	// turn off 
 }
 void use_sensor_toggle()
 {

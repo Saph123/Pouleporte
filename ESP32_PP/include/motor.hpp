@@ -10,5 +10,6 @@ void tuningDown();
 #define CAPTEUR_DU_HAUT 1
 #define CAPTEUR_DU_BAS 0
 
-const int H_A_Pin = 16;
+const int H_A_Pin = 18;
+const int N_SLEEP_PIN = 16;
 const int H_B_Pin = 21;
